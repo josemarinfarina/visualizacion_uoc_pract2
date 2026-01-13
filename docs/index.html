@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flujos Migratorios Globales | UNHCR 2000-2016</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
+    
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <!-- Hero Section -->
+    <section class="section hero" id="hero">
+        <div class="hero-background">
+            <div class="gradient-orb orb-1"></div>
+            <div class="gradient-orb orb-2"></div>
+            <div class="gradient-orb orb-3"></div>
+        </div>
+        <div class="hero-content">
+            <span class="hero-tag">Visualización de Datos · UNHCR</span>
+            <h1 class="hero-title">
+                <span class="title-line">Flujos</span>
+                <span class="title-line accent">Migratorios</span>
+                <span class="title-line">Globales</span>
+            </h1>
+            <p class="hero-subtitle">
+                Un análisis visual de los movimientos de refugiados y solicitantes de asilo
+                a través de 17 años de datos (2000-2016), por José Marín.
+            </p>
+            <div class="scroll-indicator">
+                <span>Scroll para explorar</span>
+                <div class="scroll-arrow"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Image Sequence 1 -->
+    <section class="section sequence-section" id="sequence-1" data-sequence="render1_opt" data-start="1" data-end="113" data-padding="3" data-pattern="frame{frame}.jpg">
+        <div class="sequence-gradient-top"></div>
+        <div class="sequence-gradient-bottom"></div>
+        <div class="sequence-container">
+            <canvas id="sequence-canvas-1" class="sequence-canvas"></canvas>
+        </div>
+        <div class="sequence-overlay">
+            <div class="sequence-text" data-animate>
+                <span class="viz-number">01</span>
+                <h2>Red Global de Refugiados</h2>
+                <p>Visualización 3D de los flujos migratorios mundiales renderizada en Blender con SciGraphs</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="section stats-section" id="stats">
+        <div class="stats-background-image" id="stats-bg-image"></div>
+        <div class="stats-sticky">
+            <div class="container">
+                <div class="stats-grid">
+                    <div class="stat-card" data-stat-index="0">
+                        <div class="stat-number" data-stat-value="65.3M"></div>
+                        <div class="stat-label">Personas Desplazadas</div>
+                        <div class="stat-detail">Total acumulado 2000-2016</div>
+                    </div>
+                    <div class="stat-card" data-stat-index="1">
+                        <div class="stat-number" data-stat-value="189"></div>
+                        <div class="stat-label">Países de Origen</div>
+                        <div class="stat-detail">Fuentes de migración forzada</div>
+                    </div>
+                    <div class="stat-card" data-stat-index="2">
+                        <div class="stat-number" data-stat-value="215"></div>
+                        <div class="stat-label">Países de Destino</div>
+                        <div class="stat-detail">Naciones receptoras</div>
+                    </div>
+                    <div class="stat-card" data-stat-index="3">
+                        <div class="stat-number" data-stat-value="17"></div>
+                        <div class="stat-label">Años de Datos</div>
+                        <div class="stat-detail">Período analizado</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Chord Diagram -->
+    <section class="section viz-section" id="chord-section">
+        <div class="viz-wrapper">
+            <div class="viz-intro" data-animate>
+                <span class="viz-number">02</span>
+                <h2 class="viz-title">Conexiones Regionales</h2>
+                <p class="viz-description">
+                    Diagrama de cuerdas mostrando flujos migratorios entre regiones.
+                    El grosor representa la magnitud del flujo.
+                </p>
+                <div class="viz-question">
+                    <strong>Pregunta:</strong> ¿Cuáles son los principales sumideros y fuentes en la red global?
+                </div>
+            </div>
+            <div class="viz-container" data-animate>
+                <div class="viz-controls">
+                    <div class="control-group">
+                        <label>Mostrar:</label>
+                        <div class="button-group">
+                            <button class="btn active" data-chord-flow="flows">Flujos</button>
+                            <button class="btn" data-chord-flow="sources">Emisores</button>
+                            <button class="btn" data-chord-flow="sinks">Receptores</button>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label>Nivel:</label>
+                        <div class="button-group">
+                            <button class="btn active" data-chord-mode="regions">Regiones</button>
+                            <button class="btn" data-chord-mode="countries">Países</button>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label>Años:</label>
+                        <input type="range" id="chord-year-start" min="2000" max="2016" value="2000" step="1">
+                        <span id="chord-year-start-value">2000</span>
+                        <span style="margin: 0 5px;">-</span>
+                        <input type="range" id="chord-year-end" min="2000" max="2016" value="2016" step="1">
+                        <span id="chord-year-end-value">2016</span>
+                    </div>
+                </div>
+                <div id="chord-viz" class="visualization"></div>
+                <div class="viz-legend" id="chord-legend"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Explanation: Regional Connections -->
+    <section class="section explanation-section">
+        <div class="explanation-content" data-animate>
+            <div class="explanation-highlight">Asia</div>
+            <h2>El continente asiático emerge como el principal receptor</h2>
+            <p>
+                Los datos revelan que Asia absorbe el mayor volumen de refugiados, principalmente debido a la proximidad 
+                geográfica con las zonas de conflicto. Pakistán ha sido históricamente el mayor receptor mundial,
+                acogiendo a millones de afganos que huyen de décadas de guerra. Afganistán es, con diferencia,
+                el país que más refugiados ha generado en el período analizado.
+            </p>
+            <div class="explanation-stats">
+                <div class="exp-stat">
+                    <span class="exp-stat-number">26.8M</span>
+                    <span class="exp-stat-label">recibidos por Pakistán (mayor receptor)</span>
+                </div>
+                <div class="exp-stat">
+                    <span class="exp-stat-number">46.1M</span>
+                    <span class="exp-stat-label">emitidos por Afganistán (mayor emisor)</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Image Sequence 2 -->
+    <section class="section sequence-section" id="sequence-2" data-sequence="render2_opt" data-start="1" data-end="407" data-pattern="frame{frame}.jpg" data-padding="4" data-frames-per-year="24" data-start-year="2000">
+        <div class="sequence-gradient-top"></div>
+        <div class="sequence-gradient-bottom"></div>
+        <div class="sequence-container">
+            <canvas id="sequence-canvas-2" class="sequence-canvas"></canvas>
+        </div>
+        <div class="sequence-year-indicator" id="year-indicator">
+            <div class="year-display">
+                <span class="year-label">Año</span>
+                <span class="year-value" id="year-value">2000</span>
+            </div>
+            <div class="year-countries" id="year-countries">
+                <span class="countries-label">Principales emisores:</span>
+                <ul class="countries-list" id="countries-list"></ul>
+            </div>
+        </div>
+        <div class="sequence-overlay">
+            <div class="sequence-text" data-animate>
+                <span class="viz-number">03</span>
+                <h2>Análisis Temporal</h2>
+                <p>Evolución de los flujos migratorios a lo largo del tiempo</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Streamgraph -->
+    <section class="section viz-section" id="stream-section">
+        <div class="viz-wrapper">
+            <div class="viz-intro" data-animate>
+                <span class="viz-number">04</span>
+                <h2 class="viz-title">Evolución Temporal</h2>
+                <p class="viz-description">
+                    Streamgraph de la evolución de flujos migratorios a lo largo del tiempo.
+                    Cada capa representa un país de origen.
+                </p>
+                <div class="viz-question">
+                    <strong>Pregunta:</strong> ¿Cómo ha cambiado la topología de la red desde 2000 a 2016?
+                </div>
+            </div>
+            <div class="viz-container" data-animate>
+                <div class="viz-controls">
+                    <div class="control-group">
+                        <label>Tipo:</label>
+                        <div class="button-group">
+                            <button class="btn active" data-stream-type="silhouette">Silueta</button>
+                            <button class="btn" data-stream-type="expand">Expandido</button>
+                            <button class="btn" data-stream-type="zero">Apilado</button>
+                        </div>
+                    </div>
+                </div>
+                <div id="stream-viz" class="visualization"></div>
+                <div class="viz-legend" id="stream-legend"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Explanation: Temporal Evolution -->
+    <section class="section explanation-section">
+        <div class="explanation-content" data-animate>
+            <div class="explanation-highlight">2011</div>
+            <h2>El punto de inflexión: La Primavera Árabe</h2>
+            <p>
+                El streamgraph muestra claramente cómo 2011 marca un antes y un después. La guerra civil siria 
+                desencadenó el mayor éxodo de refugiados desde la Segunda Guerra Mundial. En apenas 5 años, 
+                Siria pasó de ser un país receptor a generar más de 5 millones de refugiados.
+            </p>
+            <div class="explanation-stats">
+                <div class="exp-stat">
+                    <span class="exp-stat-number">+400%</span>
+                    <span class="exp-stat-label">incremento de flujos desde 2011</span>
+                </div>
+                <div class="exp-stat">
+                    <span class="exp-stat-number">5.5M</span>
+                    <span class="exp-stat-label">refugiados sirios en 2016</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Force Graph -->
+    <section class="section viz-section" id="force-section">
+        <div class="viz-wrapper">
+            <div class="viz-intro" data-animate>
+                <span class="viz-number">05</span>
+                <h2 class="viz-title">Red de Tránsito y Género</h2>
+                <p class="viz-description">
+                    Red de fuerzas revelando nodos críticos de tránsito y disparidades de género.
+                    El color indica ratio de mujeres, el tamaño el volumen de flujo.
+                </p>
+                <div class="viz-question">
+                    <strong>Pregunta:</strong> ¿Qué países actúan como nodos de tránsito críticos?
+                </div>
+            </div>
+            <div class="viz-container" data-animate>
+                <div class="viz-controls">
+                    <div class="control-group">
+                        <label>Filtrar por desviación:</label>
+                        <div class="button-group">
+                            <button class="btn active" data-force-filter="all">Todos</button>
+                            <button class="btn" data-force-filter="high-female">+Mujeres</button>
+                            <button class="btn" data-force-filter="low-female">+Hombres</button>
+                            <button class="btn" data-force-filter="high-children">+Menores</button>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label>Fuerza:</label>
+                        <input type="range" id="force-strength" min="-500" max="-50" value="-200">
+                    </div>
+                </div>
+                <div id="force-viz" class="visualization"></div>
+                <div class="viz-legend" id="force-legend"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Explanation: Gender and Transit -->
+    <section class="section explanation-section">
+        <div class="explanation-content" data-animate>
+            <div class="explanation-highlight">51%</div>
+            <h2>Los más vulnerables: menores y mujeres</h2>
+            <p>
+                Más de la mitad de los desplazados son menores de 18 años. El análisis regional muestra 
+                que los flujos hacia Europa tienen mayoría masculina (hombres cruzando rutas peligrosas),
+                mientras que en África y Asia predominan mujeres y niños, reflejando el desplazamiento 
+                de familias enteras hacia países vecinos.
+            </p>
+            <div class="explanation-stats">
+                <div class="exp-stat">
+                    <span class="exp-stat-number">51%</span>
+                    <span class="exp-stat-label">son menores de 18 años</span>
+                </div>
+                <div class="exp-stat">
+                    <span class="exp-stat-number">+60%</span>
+                    <span class="exp-stat-label">menores en rutas africanas de alta vulnerabilidad</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Conclusions -->
+    <section class="section conclusions-section" id="conclusions">
+        <div class="container">
+            <div class="conclusions-content" data-animate>
+                <h2>Hallazgos Principales</h2>
+                <div class="findings-grid">
+                    <div class="finding-card">
+                        <div class="finding-icon">◆</div>
+                        <h3>Afganistán: Mayor Emisor</h3>
+                        <p>Con 46.1M de personas desplazadas, Afganistán lidera como principal origen. Pakistán (26.8M) e Irán (16.9M) absorben la mayoría de estos flujos.</p>
+                    </div>
+                    <div class="finding-card">
+                        <div class="finding-icon">▲</div>
+                        <h3>Crisis Siria (2011-2016)</h3>
+                        <p>El conflicto sirio generó un incremento exponencial. Turquía recibió 7.7M de sirios, convirtiéndose en el mayor receptor de esta crisis específica.</p>
+                    </div>
+                    <div class="finding-card">
+                        <div class="finding-icon">●</div>
+                        <h3>Concentración en Asia</h3>
+                        <p>Asia absorbe más del 60% de los refugiados mundiales. Los flujos son principalmente intrarregionales: los desplazados buscan refugio en países vecinos.</p>
+                    </div>
+                    <div class="finding-card">
+                        <div class="finding-icon">■</div>
+                        <h3>Patrones de Género</h3>
+                        <p>Las rutas hacia Europa muestran mayoría masculina (migración laboral/rutas peligrosas). En África y Asia predominan mujeres y menores (51% del total).</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="section footer">
+        <div class="container">
+            <p class="author-info">Por <strong>José Marín</strong></p>
+            <p class="course-info">Asignatura de Visualización de Datos · Máster de Ciencia de Datos (UOC)</p>
+            <div class="footer-credits">
+                <p>Datos: UNHCR Population Statistics Database</p>
+                <p>Visualización: D3.js + SciGraphs (Blender)</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/typewriter.js"></script>
+    <script src="js/data-loader.js"></script>
+    <script src="js/sequence-player.js"></script>
+    <script src="js/footprints.js"></script>
+    <script src="js/chord.js"></script>
+    <script src="js/stream.js"></script>
+    <script src="js/force.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
